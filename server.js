@@ -4,13 +4,16 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 const createPath = require("./helpers/createPath.js");
 const methodOverride = require("method-override");
+require("dotenv").config();
 const db =
   "mongodb+srv://Yevhen-user:ZPLUyHUegDaLFvUj@cluster0.lbojy4u.mongodb.net/db_contacts";
 const postRouters = require("./routes/post-routes");
+const postApiRouters = require("./routes/api-post-routes");
 const contactRouters = require("./routes/contact-routes");
 const PORT = 3000;
+
 mongoose
-  .connect(db)
+  .connect(process.env.MONGO_URL)
   .then((res) => {
     console.log("Database connection successful");
     app.listen(PORT, () => {
@@ -37,6 +40,7 @@ app.get("/", (req, res) => {
 });
 app.use(contactRouters);
 app.use(postRouters);
+app.use(postApiRouters);
 
 app.use((req, res) => {
   const title = "Error Page";
